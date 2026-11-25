@@ -159,3 +159,7 @@ Thumbs.db
 .directory
 .Trash-*
 .vscode/
+
+# DB
+.db
+.sqlite

@@ -2,18 +2,28 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from fastapi import WebSocket
 
+from app.storage import ChatStorage
+
 
 class ConnectionManager:
-    """Gerencia conexões ativas, salas e presença online/offline em memória."""
+    """Gerencia conexões ativas, salas, presença e histórico persistido."""
 
-    def __init__(self, default_rooms: list[str] | None = None) -> None:
+    DEFAULT_ROOMS = ["geral", "dev", "aleatorio"]
+
+    def __init__(self, storage: ChatStorage | None = None, default_rooms: list[str] | None = None) -> None:
+        self.storage = storage or ChatStorage()
+        base_rooms = default_rooms or self.DEFAULT_ROOMS
+        self.storage.ensure_rooms(base_rooms)
+
         # rooms[room_name][websocket] = nickname
         self.rooms: dict[str, dict[WebSocket, str]] = defaultdict(dict)
-        for room in (default_rooms or ["geral", "dev", "aleatorio"]):
+        for room in self.storage.list_rooms(base_rooms):
             self.rooms[room] = {}
 
     def list_rooms(self) -> list[str]:
-        return sorted(self.rooms.keys())
+        active = set(self.rooms.keys())
+        persisted = set(self.storage.list_rooms(self.DEFAULT_ROOMS))
+        return sorted(active | persisted)
 
     def online_users(self, room: str) -> list[str]:
         users = set(self.rooms.get(room, {}).values())
@@ -24,7 +34,17 @@ class ConnectionManager:
         clean_room = room.strip().lower() or "geral"
         clean_nick = nickname.strip()[:24] or "Anônimo"
 
+        self.storage.ensure_rooms([clean_room])
         self.rooms[clean_room][websocket] = clean_nick
+
+        history = self.storage.get_recent_messages(clean_room, limit=50)
+        await websocket.send_json(
+            {
+                "type": "history",
+                "room": clean_room,
+                "messages": history,
+            }
+        )
 
         await self.broadcast(
             clean_room,
@@ -46,12 +66,7 @@ class ConnectionManager:
             return
 
         nickname = room_clients.pop(websocket)
-        # Mantém salas padrão mesmo vazias; remove salas extras vazias
-        if clean_room not in {"geral", "dev", "aleatorio"} and not room_clients:
-            del self.rooms[clean_room]
-            online = []
-        else:
-            online = self.online_users(clean_room)
+        online = self.online_users(clean_room)
 
         await self.broadcast(
             clean_room,
@@ -69,20 +84,13 @@ class ConnectionManager:
     async def send_chat_message(self, websocket: WebSocket, room: str, text: str) -> None:
         clean_room = room.strip().lower() or "geral"
         sender = self.rooms.get(clean_room, {}).get(websocket, "Anônimo")
-        clean_text = text.strip()
+        clean_text = text.strip()[:1000]
         if not clean_text:
             return
 
-        await self.broadcast(
-            clean_room,
-            {
-                "type": "message",
-                "room": clean_room,
-                "sender": sender,
-                "text": clean_text[:1000],
-                "timestamp": self._now(),
-            },
-        )
+        timestamp = self._now()
+        payload = self.storage.save_message(clean_room, sender, clean_text, timestamp)
+        await self.broadcast(clean_room, payload)
 
     async def broadcast(self, room: str, payload: dict) -> None:
         clients = list(self.rooms.get(room, {}).keys())

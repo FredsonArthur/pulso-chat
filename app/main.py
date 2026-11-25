@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.manager import ConnectionManager
 
-app = FastAPI(title="pulso-chat", version="0.2.0")
+app = FastAPI(title="pulso-chat", version="0.3.0")
 manager = ConnectionManager()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")

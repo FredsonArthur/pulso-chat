@@ -280,7 +280,11 @@
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        if (data.type === "presence") {
+        if (data.type === "history") {
+          messagesEl.innerHTML = "";
+          const list = Array.isArray(data.messages) ? data.messages : [];
+          list.forEach((m) => addChatMessage(m.sender, m.text, m.timestamp));
+        } else if (data.type === "presence") {
           renderRooms(data.rooms);
           renderOnline(data.online);
           const action = data.event === "join" ? "entrou na sala" : "saiu da sala";
