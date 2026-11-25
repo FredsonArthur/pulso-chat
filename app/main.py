@@ -1,8 +1,11 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI(title="pulso-chat", version="0.1.0")
+from app.manager import ConnectionManager
+
+app = FastAPI(title="pulso-chat", version="0.2.0")
+manager = ConnectionManager()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -12,13 +15,29 @@ async def get_index():
     return FileResponse("static/index.html")
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    await websocket.send_text("[pulso-chat] Conectado ao servidor WebSocket!")
+@app.get("/api/rooms")
+async def get_rooms():
+    return {"rooms": manager.list_rooms()}
+
+
+@app.websocket("/ws/{room}")
+async def websocket_endpoint(
+    websocket: WebSocket,
+    room: str,
+    nickname: str = Query(default="Anônimo"),
+):
+    clean_room = room.strip().lower() or "geral"
+    await manager.connect(websocket, clean_room, nickname)
     try:
         while True:
-            data = await websocket.receive_text()
-            await websocket.send_text(f"Eco do servidor: {data}")
+            data = await websocket.receive_json()
+            if data.get("type") == "message":
+                await manager.send_chat_message(
+                    websocket,
+                    clean_room,
+                    str(data.get("text", "")),
+                )
     except WebSocketDisconnect:
-        print("[pulso-chat] Cliente desconectado.")
+        await manager.disconnect(websocket, clean_room)
+    except Exception:
+        await manager.disconnect(websocket, clean_room)
