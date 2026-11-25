@@ -6,36 +6,30 @@ from app.storage import ChatStorage
 
 
 class ConnectionManager:
-    """Gerencia conexões ativas, salas, presença e histórico persistido."""
+    """Gerencia conexões ativas por sala/DM e presença global online."""
 
-    DEFAULT_ROOMS = ["geral", "dev", "aleatorio"]
-
-    def __init__(self, storage: ChatStorage | None = None, default_rooms: list[str] | None = None) -> None:
-        self.storage = storage or ChatStorage()
-        base_rooms = default_rooms or self.DEFAULT_ROOMS
-        self.storage.ensure_rooms(base_rooms)
-
-        # rooms[room_name][websocket] = nickname
+    def __init__(self, storage: ChatStorage) -> None:
+        self.storage = storage
+        # rooms[room][websocket] = username
         self.rooms: dict[str, dict[WebSocket, str]] = defaultdict(dict)
-        for room in self.storage.list_rooms(base_rooms):
-            self.rooms[room] = {}
+        # global_online[username] = set/count of active sockets
+        self.global_online: dict[str, int] = defaultdict(int)
 
-    def list_rooms(self) -> list[str]:
-        active = set(self.rooms.keys())
-        persisted = set(self.storage.list_rooms(self.DEFAULT_ROOMS))
-        return sorted(active | persisted)
+    def online_usernames(self) -> list[str]:
+        return sorted([u for u, count in self.global_online.items() if count > 0])
 
-    def online_users(self, room: str) -> list[str]:
+    def room_online_usernames(self, room: str) -> list[str]:
         users = set(self.rooms.get(room, {}).values())
-        return sorted(users, key=str.lower)
+        return sorted(users)
 
-    async def connect(self, websocket: WebSocket, room: str, nickname: str) -> None:
+    async def connect(self, websocket: WebSocket, room: str, username: str) -> None:
         await websocket.accept()
-        clean_room = room.strip().lower() or "geral"
-        clean_nick = nickname.strip()[:24] or "Anônimo"
+        clean_room = room.strip().lower()
+        clean_user = username.strip().lower()
 
-        self.storage.ensure_rooms([clean_room])
-        self.rooms[clean_room][websocket] = clean_nick
+        self.storage.join_room(clean_room, clean_user)
+        self.rooms[clean_room][websocket] = clean_user
+        self.global_online[clean_user] += 1
 
         history = self.storage.get_recent_messages(clean_room, limit=50)
         await websocket.send_json(
@@ -52,21 +46,22 @@ class ConnectionManager:
                 "type": "presence",
                 "event": "join",
                 "room": clean_room,
-                "nickname": clean_nick,
-                "online": self.online_users(clean_room),
-                "rooms": self.list_rooms(),
+                "username": clean_user,
+                "room_online": self.room_online_usernames(clean_room),
+                "global_online": self.online_usernames(),
                 "timestamp": self._now(),
             },
         )
 
     async def disconnect(self, websocket: WebSocket, room: str) -> None:
-        clean_room = room.strip().lower() or "geral"
-        room_clients = self.rooms.get(clean_room)
-        if not room_clients or websocket not in room_clients:
+        clean_room = room.strip().lower()
+        clients = self.rooms.get(clean_room)
+        if not clients or websocket not in clients:
             return
 
-        nickname = room_clients.pop(websocket)
-        online = self.online_users(clean_room)
+        username = clients.pop(websocket)
+        if self.global_online[username] > 0:
+            self.global_online[username] -= 1
 
         await self.broadcast(
             clean_room,
@@ -74,22 +69,24 @@ class ConnectionManager:
                 "type": "presence",
                 "event": "leave",
                 "room": clean_room,
-                "nickname": nickname,
-                "online": online,
-                "rooms": self.list_rooms(),
+                "username": username,
+                "room_online": self.room_online_usernames(clean_room),
+                "global_online": self.online_usernames(),
                 "timestamp": self._now(),
             },
         )
 
     async def send_chat_message(self, websocket: WebSocket, room: str, text: str) -> None:
-        clean_room = room.strip().lower() or "geral"
-        sender = self.rooms.get(clean_room, {}).get(websocket, "Anônimo")
+        clean_room = room.strip().lower()
+        sender = self.rooms.get(clean_room, {}).get(websocket)
+        if not sender:
+            return
+
         clean_text = text.strip()[:1000]
         if not clean_text:
             return
 
-        timestamp = self._now()
-        payload = self.storage.save_message(clean_room, sender, clean_text, timestamp)
+        payload = self.storage.save_message(clean_room, sender, clean_text, self._now())
         await self.broadcast(clean_room, payload)
 
     async def broadcast(self, room: str, payload: dict) -> None:

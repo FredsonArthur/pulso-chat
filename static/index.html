@@ -19,10 +19,12 @@
       --accent: #7c5dfa;
       --accent-hover: #8d72fc;
       --online: #22c55e;
-      --offline: #ef4444;
+      --offline: #64748b;
+      --danger: #ef4444;
       --warn: #f59e0b;
       --radius-sm: 8px;
       --radius-md: 12px;
+      --radius-lg: 16px;
       --radius-pill: 999px;
     }
 
@@ -39,13 +41,155 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
+    /* Inputs & Buttons */
+    input {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    input::placeholder {
+      color: var(--text-muted);
+    }
+
+    input:focus {
+      border-color: var(--border-focus);
+      background: var(--bg-hover);
+    }
+
+    button {
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-ghost {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
+      padding: 8px 12px;
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-hover);
+    }
+
+    /* Auth Screen */
+    .auth-screen {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .pulse-ring {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--online);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
+      flex-shrink: 0;
+    }
+
+    .auth-subtitle {
+      margin: 0 0 20px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--bg-app);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 18px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .tab-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    .tab-btn.active {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .auth-error {
+      margin-bottom: 14px;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      font-size: 0.83rem;
+    }
+
+    /* App Layout */
     .app {
       height: 100%;
       display: grid;
       grid-template-rows: 58px 1fr;
     }
 
-    /* Topbar */
     .topbar {
       display: flex;
       align-items: center;
@@ -59,7 +203,7 @@
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .brand {
@@ -68,15 +212,6 @@
       gap: 9px;
       font-weight: 700;
       font-size: 1rem;
-      letter-spacing: -0.01em;
-    }
-
-    .pulse-ring {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--online);
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
     }
 
     .status-badge {
@@ -104,75 +239,25 @@
     }
 
     .status-badge.disconnected .status-dot {
-      background: var(--offline);
+      background: var(--danger);
     }
 
-    .session-controls {
+    .user-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .session-label {
-      font-size: 0.8rem;
+      gap: 10px;
+      font-size: 0.86rem;
       color: var(--text-secondary);
     }
 
-    /* Inputs & Buttons */
-    input {
-      background: var(--bg-elevated);
+    .user-pill strong {
       color: var(--text-primary);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 8px 11px;
-      font-size: 0.875rem;
-      outline: none;
-      transition: border-color 0.15s ease, background 0.15s ease;
     }
 
-    input::placeholder {
-      color: var(--text-muted);
-    }
-
-    input:focus {
-      border-color: var(--border-focus);
-      background: var(--bg-hover);
-    }
-
-    button {
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      padding: 8px 14px;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
-
-    .btn-ghost {
-      background: var(--bg-elevated);
-      color: var(--text-primary);
-      border-color: var(--border-subtle);
-      padding: 8px 11px;
-    }
-
-    .btn-ghost:hover {
-      background: var(--bg-hover);
-    }
-
-    /* Main 3-column workspace */
+    /* Workspace */
     .workspace {
       display: grid;
-      grid-template-columns: 240px 1fr 230px;
+      grid-template-columns: 265px 1fr 230px;
       min-height: 0;
     }
 
@@ -191,8 +276,14 @@
       border-left: 1px solid var(--border-subtle);
     }
 
+    .sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 10px 14px;
+    }
+
     .section-header {
-      padding: 14px 16px 8px;
+      padding: 12px 6px 6px;
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -212,16 +303,11 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .rooms-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 4px 10px 10px;
-    }
-
-    .room-item {
+    .nav-item {
       width: 100%;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
       padding: 8px 10px;
       margin-bottom: 3px;
@@ -232,25 +318,50 @@
       font-weight: 500;
     }
 
-    .room-item:hover {
+    .nav-item:hover {
       background: var(--bg-hover);
       color: var(--text-primary);
     }
 
-    .room-item.active {
+    .nav-item.active {
       background: rgba(124, 93, 250, 0.16);
       color: #fff;
       border-color: rgba(124, 93, 250, 0.35);
       font-weight: 600;
     }
 
-    .room-hash {
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .nav-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .room-prefix {
       color: var(--text-muted);
       font-weight: 700;
     }
 
-    .room-item.active .room-hash {
+    .nav-item.active .room-prefix {
       color: #a78bfa;
+    }
+
+    .presence-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--offline);
+      flex-shrink: 0;
+    }
+
+    .presence-dot.online {
+      background: var(--online);
     }
 
     .new-room-box {
@@ -264,66 +375,11 @@
       flex: 1;
       min-width: 0;
       padding: 7px 9px;
-      font-size: 0.82rem;
+      font-size: 0.83rem;
     }
 
-    .online-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 4px 12px 14px;
-    }
-
-    .user-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 6px 6px;
-      border-radius: var(--radius-sm);
-      font-size: 0.86rem;
-      color: var(--text-primary);
-    }
-
-    .user-row:hover {
-      background: var(--bg-elevated);
-    }
-
-    .avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      display: grid;
-      place-items: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #c4b5fd;
-      flex-shrink: 0;
-    }
-
-    .user-name {
-      flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .presence-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--online);
-      flex-shrink: 0;
-    }
-
-    .empty-hint {
-      padding: 12px 6px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    /* Chat column */
-    .chat-area {
+    /* Main Area (Lobby + Chat) */
+    .main-area {
       display: flex;
       flex-direction: column;
       min-width: 0;
@@ -331,27 +387,88 @@
       background: var(--bg-app);
     }
 
+    .lobby-view {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px;
+      max-width: 780px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .lobby-title {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+    }
+
+    .lobby-sub {
+      margin: 0 0 24px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .lobby-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .lobby-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: left;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .lobby-card:hover {
+      background: var(--bg-elevated);
+      border-color: rgba(124, 93, 250, 0.4);
+    }
+
+    .lobby-card-title {
+      font-weight: 600;
+      font-size: 0.96rem;
+    }
+
+    .lobby-card-meta {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Chat View */
+    .chat-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
     .chat-header {
-      height: 50px;
+      height: 52px;
       padding: 0 20px;
       border-bottom: 1px solid var(--border-subtle);
       background: rgba(19, 22, 31, 0.72);
-      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chat-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .chat-room-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .chat-room-title span {
-      color: #a78bfa;
+      font-size: 0.96rem;
     }
 
     .messages {
@@ -366,12 +483,26 @@
     .msg-row {
       display: flex;
       gap: 10px;
-      max-width: min(72%, 620px);
+      max-width: min(74%, 620px);
     }
 
     .msg-row.self {
       align-self: flex-end;
       flex-direction: row-reverse;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      place-items: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      flex-shrink: 0;
     }
 
     .msg-bubble {
@@ -406,10 +537,6 @@
       color: #c4b5fd;
     }
 
-    .msg-row.self .msg-author {
-      color: #ddd6fe;
-    }
-
     .msg-time {
       color: var(--text-muted);
       font-variant-numeric: tabular-nums;
@@ -436,35 +563,25 @@
 
     .composer input {
       flex: 1;
-      padding: 10px 14px;
       border-radius: var(--radius-md);
     }
 
-    .composer button {
-      padding: 10px 18px;
-      border-radius: var(--radius-md);
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
     }
 
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+    .empty-hint {
+      padding: 8px 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.18);
-      border-radius: var(--radius-pill);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(148, 163, 184, 0.3);
-    }
-
-    @media (max-width: 860px) {
+    @media (max-width: 900px) {
       .workspace {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr auto;
@@ -474,22 +591,54 @@
       .sidebar.right {
         border: none;
         border-bottom: 1px solid var(--border-subtle);
-        max-height: 140px;
+        max-height: 160px;
       }
 
       .sidebar.right {
         border-bottom: none;
         border-top: 1px solid var(--border-subtle);
       }
-
-      .session-label {
-        display: none;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="app">
+  <!-- TELA DE LOGIN / CADASTRO -->
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="pulse-ring"></span>
+        <span>pulso-chat</span>
+      </div>
+      <p class="auth-subtitle">Entre na sua conta ou crie um acesso rápido.</p>
+
+      <div class="auth-tabs">
+        <button id="tabLogin" class="tab-btn active" onclick="setAuthMode('login')">Entrar</button>
+        <button id="tabRegister" class="tab-btn" onclick="setAuthMode('register')">Cadastrar</button>
+      </div>
+
+      <div id="authError" class="auth-error hidden"></div>
+
+      <div class="form-group">
+        <label for="authUser">Usuário</label>
+        <input id="authUser" type="text" placeholder="ex: fred" maxlength="20" autocomplete="username" />
+      </div>
+
+      <div id="displayGroup" class="form-group hidden">
+        <label for="authDisplay">Nome de exibição (opcional)</label>
+        <input id="authDisplay" type="text" placeholder="ex: Fred" maxlength="24" />
+      </div>
+
+      <div class="form-group">
+        <label for="authPass">Senha</label>
+        <input id="authPass" type="password" placeholder="••••" autocomplete="current-password" />
+      </div>
+
+      <button id="authSubmitBtn" class="btn-primary" style="width: 100%;" onclick="submitAuth()">Entrar</button>
+    </div>
+  </section>
+
+  <!-- APLICAÇÃO PRINCIPAL (LOBBY + SALAS + CONVERSAS 1:1) -->
+  <div id="appScreen" class="app hidden">
     <header class="topbar">
       <div class="brand-group">
         <div class="brand">
@@ -498,77 +647,129 @@
         </div>
         <div id="connBadge" class="status-badge">
           <span class="status-dot"></span>
-          <span id="connText">Conectando...</span>
+          <span id="connText">No lobby</span>
         </div>
       </div>
 
-      <div class="session-controls">
-        <label class="session-label" for="nickInput">Apelido</label>
-        <input id="nickInput" type="text" value="Fred" maxlength="24" style="width: 136px;" />
-        <button class="btn-primary" onclick="reconnect()">Entrar</button>
+      <div class="user-pill">
+        <span>Conectado como <strong id="loggedUserLabel">-</strong></span>
+        <button class="btn-ghost" onclick="logout()">Sair</button>
       </div>
     </header>
 
     <div class="workspace">
       <aside class="sidebar left">
-        <div class="section-header">
-          <span>Salas</span>
-          <span id="roomsCount" class="count-pill">0</span>
+        <div class="sidebar-scroll">
+          <button id="lobbyNavBtn" class="nav-item active" onclick="openLobby()">
+            <span class="nav-left">
+              <span class="room-prefix">⌂</span>
+              <span class="nav-label">Lobby</span>
+            </span>
+          </button>
+
+          <div class="section-header">
+            <span>Minhas Salas</span>
+            <span id="roomsCount" class="count-pill">0</span>
+          </div>
+          <div id="myRoomsList"></div>
+
+          <div class="section-header" style="margin-top: 10px;">
+            <span>Conversas Diretas (1:1)</span>
+            <span id="usersCount" class="count-pill">0</span>
+          </div>
+          <div id="usersList"></div>
         </div>
-        <div id="roomsList" class="rooms-list"></div>
+
         <div class="new-room-box">
-          <input id="newRoomInput" type="text" placeholder="nova-sala" maxlength="32" />
-          <button class="btn-ghost" onclick="createAndJoinRoom()" title="Criar e entrar">+</button>
+          <input id="newRoomInput" type="text" placeholder="criar nova sala..." maxlength="30" />
+          <button class="btn-ghost" onclick="createRoom()" title="Criar sala">+</button>
         </div>
       </aside>
 
-      <main class="chat-area">
-        <div class="chat-header">
-          <div class="chat-room-title">
-            <span>#</span>
-            <strong id="currentRoomTitle">geral</strong>
+      <main class="main-area">
+        <!-- LOBBY -->
+        <section id="lobbyView" class="lobby-view">
+          <h1 class="lobby-title">Bem-vindo ao seu Lobby, <span id="lobbyWelcomeUser"></span></h1>
+          <p class="lobby-sub">Escolha uma sala que você participa, crie uma nova sala ou inicie uma conversa direta.</p>
+
+          <div class="section-header" style="padding-left: 0;">
+            <span>Salas que você participa</span>
           </div>
-        </div>
+          <div id="lobbyRoomsGrid" class="lobby-grid"></div>
 
-        <div id="messages" class="messages"></div>
+          <div class="section-header" style="padding-left: 0;">
+            <span>Pessoas disponíveis para conversa direta</span>
+          </div>
+          <div id="lobbyUsersGrid" class="lobby-grid"></div>
+        </section>
 
-        <div class="composer">
-          <input id="msgInput" type="text" placeholder="Escreva uma mensagem..." maxlength="1000" />
-          <button class="btn-primary" onclick="sendMessage()">Enviar</button>
-        </div>
+        <!-- CONVERSA ATIVA (SALA OU DM) -->
+        <section id="chatView" class="chat-view hidden">
+          <div class="chat-header">
+            <div class="chat-title-group">
+              <button class="btn-ghost" style="padding: 5px 10px; font-size: 0.8rem;" onclick="openLobby()">← Lobby</button>
+              <div id="activeChatTitle" class="chat-room-title"># geral</div>
+            </div>
+          </div>
+
+          <div id="messages" class="messages"></div>
+
+          <div class="composer">
+            <input id="msgInput" type="text" placeholder="Escreva uma mensagem..." maxlength="1000" />
+            <button class="btn-primary" onclick="sendMessage()">Enviar</button>
+          </div>
+        </section>
       </main>
 
       <aside class="sidebar right">
         <div class="section-header">
-          <span>Online</span>
+          <span id="rightPanelTitle">Online</span>
           <span id="onlineCount" class="count-pill">0</span>
         </div>
-        <div id="onlineList" class="online-list"></div>
+        <div id="onlineList" class="sidebar-scroll"></div>
       </aside>
     </div>
   </div>
 
   <script>
+    let authMode = "login";
+    let sessionToken = localStorage.getItem("pulso_token") || "";
+    let currentUser = localStorage.getItem("pulso_user") || "";
     let ws = null;
-    let currentRoom = "geral";
-    let knownRooms = ["geral", "dev", "aleatorio"];
+    let activeRoom = null;
+    let lobbyState = { my_rooms: [], users: [], online_users: [] };
 
-    const nickInput = document.getElementById("nickInput");
-    const newRoomInput = document.getElementById("newRoomInput");
-    const msgInput = document.getElementById("msgInput");
+    const authScreen = document.getElementById("authScreen");
+    const appScreen = document.getElementById("appScreen");
+    const authError = document.getElementById("authError");
+    const authUser = document.getElementById("authUser");
+    const authDisplay = document.getElementById("authDisplay");
+    const authPass = document.getElementById("authPass");
+    const displayGroup = document.getElementById("displayGroup");
+    const authSubmitBtn = document.getElementById("authSubmitBtn");
+    const tabLogin = document.getElementById("tabLogin");
+    const tabRegister = document.getElementById("tabRegister");
+
+    const connBadge = document.getElementById("connBadge");
+    const connText = document.getElementById("connText");
+    const loggedUserLabel = document.getElementById("loggedUserLabel");
+    const lobbyWelcomeUser = document.getElementById("lobbyWelcomeUser");
+    const lobbyNavBtn = document.getElementById("lobbyNavBtn");
+    const myRoomsList = document.getElementById("myRoomsList");
+    const usersList = document.getElementById("usersList");
+    const roomsCount = document.getElementById("roomsCount");
+    const usersCount = document.getElementById("usersCount");
+    const lobbyView = document.getElementById("lobbyView");
+    const chatView = document.getElementById("chatView");
+    const lobbyRoomsGrid = document.getElementById("lobbyRoomsGrid");
+    const lobbyUsersGrid = document.getElementById("lobbyUsersGrid");
+    const activeChatTitle = document.getElementById("activeChatTitle");
     const messagesEl = document.getElementById("messages");
-    const roomsListEl = document.getElementById("roomsList");
-    const roomsCountEl = document.getElementById("roomsCount");
-    const onlineListEl = document.getElementById("onlineList");
-    const onlineCountEl = document.getElementById("onlineCount");
-    const roomTitleEl = document.getElementById("currentRoomTitle");
-    const connBadgeEl = document.getElementById("connBadge");
-    const connTextEl = document.getElementById("connText");
-
-    function setConnectionStatus(state, label) {
-      connBadgeEl.className = `status-badge ${state}`;
-      connTextEl.textContent = label;
-    }
+    const msgInput = document.getElementById("msgInput");
+    const newRoomInput = document.getElementById("newRoomInput");
+    const rightPanelTitle = document.getElementById("rightPanelTitle");
+    const onlineList = document.getElementById("onlineList");
+    const onlineCount = document.getElementById("onlineCount");
 
     function escapeHtml(str) {
       return String(str)
@@ -583,45 +784,249 @@
       return clean ? clean[0].toUpperCase() : "?";
     }
 
-    function currentNick() {
-      return (nickInput.value || "").trim().slice(0, 24) || "Anônimo";
+    function setConnectionStatus(state, label) {
+      connBadge.className = `status-badge ${state}`;
+      connText.textContent = label;
     }
 
-    function renderRooms(rooms) {
-      if (Array.isArray(rooms) && rooms.length) {
-        knownRooms = rooms;
+    function setAuthMode(mode) {
+      authMode = mode;
+      authError.classList.add("hidden");
+      tabLogin.classList.toggle("active", mode === "login");
+      tabRegister.classList.toggle("active", mode === "register");
+      displayGroup.classList.toggle("hidden", mode !== "register");
+      authSubmitBtn.textContent = mode === "login" ? "Entrar" : "Criar conta";
+    }
+
+    function showAuthError(msg) {
+      authError.textContent = msg;
+      authError.classList.remove("hidden");
+    }
+
+    async function apiFetch(url, options = {}) {
+      const headers = Object.assign({ "Content-Type": "application/json" }, options.headers || {});
+      if (sessionToken) {
+        headers["Authorization"] = `Bearer ${sessionToken}`;
       }
-      roomsCountEl.textContent = knownRooms.length;
-      roomsListEl.innerHTML = "";
-
-      knownRooms.forEach((room) => {
-        const btn = document.createElement("button");
-        btn.className = "room-item" + (room === currentRoom ? " active" : "");
-        btn.innerHTML = `<span class="room-hash">#</span><span>${escapeHtml(room)}</span>`;
-        btn.onclick = () => switchRoom(room);
-        roomsListEl.appendChild(btn);
-      });
+      const res = await fetch(url, Object.assign({}, options, { headers }));
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.detail || "Erro na requisição.");
+      }
+      return data;
     }
 
-    function renderOnline(users) {
-      const list = Array.isArray(users) ? users : [];
-      onlineCountEl.textContent = list.length;
-      onlineListEl.innerHTML = "";
+    async function submitAuth() {
+      authError.classList.add("hidden");
+      const username = authUser.value.trim();
+      const password = authPass.value;
+      const display_name = authDisplay.value.trim();
 
-      if (!list.length) {
-        onlineListEl.innerHTML = `<div class="empty-hint">Ninguém online no momento.</div>`;
+      if (!username || !password) {
+        showAuthError("Preencha usuário e senha.");
         return;
       }
 
-      list.forEach((user) => {
+      try {
+        const endpoint = authMode === "login" ? "/api/login" : "/api/register";
+        const payload = authMode === "login"
+          ? { username, password }
+          : { username, password, display_name };
+
+        const data = await apiFetch(endpoint, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+
+        sessionToken = data.token;
+        currentUser = data.username;
+        localStorage.setItem("pulso_token", sessionToken);
+        localStorage.setItem("pulso_user", currentUser);
+        authPass.value = "";
+        await enterApp();
+      } catch (err) {
+        showAuthError(err.message);
+      }
+    }
+
+    function logout() {
+      closeSocket();
+      sessionToken = "";
+      currentUser = "";
+      activeRoom = null;
+      localStorage.removeItem("pulso_token");
+      localStorage.removeItem("pulso_user");
+      appScreen.classList.add("hidden");
+      authScreen.classList.remove("hidden");
+    }
+
+    function closeSocket() {
+      if (ws) {
+        ws.onopen = null;
+        ws.onmessage = null;
+        ws.onclose = null;
+        ws.close();
+        ws = null;
+      }
+    }
+
+    async function enterApp() {
+      try {
+        await refreshLobby();
+        authScreen.classList.add("hidden");
+        appScreen.classList.remove("hidden");
+        loggedUserLabel.textContent = currentUser;
+        lobbyWelcomeUser.textContent = currentUser;
+        openLobby();
+      } catch (err) {
+        logout();
+      }
+    }
+
+    async function refreshLobby() {
+      const data = await apiFetch("/api/lobby");
+      lobbyState = data;
+      renderSidebarAndLobby();
+    }
+
+    function renderSidebarAndLobby() {
+      const groupRooms = (lobbyState.my_rooms || []).filter((r) => !r.is_dm);
+      const onlineSet = new Set(lobbyState.online_users || []);
+      const otherUsers = lobbyState.users || [];
+
+      roomsCount.textContent = groupRooms.length;
+      usersCount.textContent = otherUsers.length;
+
+      // Sidebar: Minhas Salas
+      myRoomsList.innerHTML = "";
+      groupRooms.forEach((item) => {
+        const btn = document.createElement("button");
+        btn.className = "nav-item" + (activeRoom === item.room ? " active" : "");
+        btn.innerHTML = `
+          <span class="nav-left">
+            <span class="room-prefix">#</span>
+            <span class="nav-label">${escapeHtml(item.label)}</span>
+          </span>
+        `;
+        btn.onclick = () => joinChatRoom(item.room, `# ${item.label}`);
+        myRoomsList.appendChild(btn);
+      });
+
+      // Sidebar: Conversas Diretas (outros usuários)
+      usersList.innerHTML = "";
+      if (!otherUsers.length) {
+        usersList.innerHTML = `<div class="empty-hint">Nenhum outro usuário cadastrado ainda.</div>`;
+      } else {
+        otherUsers.forEach((u) => {
+          const isOnline = onlineSet.has(u.username);
+          const dmRoom = ["dm", ...[currentUser, u.username].sort()].join("-");
+          const btn = document.createElement("button");
+          btn.className = "nav-item" + (activeRoom === dmRoom ? " active" : "");
+          btn.innerHTML = `
+            <span class="nav-left">
+              <span class="room-prefix">@</span>
+              <span class="nav-label">${escapeHtml(u.display_name || u.username)}</span>
+            </span>
+            <span class="presence-dot ${isOnline ? "online" : ""}" title="${isOnline ? "Online" : "Offline"}"></span>
+          `;
+          btn.onclick = () => startDirectMessage(u.username, u.display_name || u.username);
+          usersList.appendChild(btn);
+        });
+      }
+
+      // Lobby cards: Salas
+      lobbyRoomsGrid.innerHTML = "";
+      groupRooms.forEach((item) => {
+        const card = document.createElement("button");
+        card.className = "lobby-card";
+        card.innerHTML = `
+          <div class="lobby-card-title"># ${escapeHtml(item.label)}</div>
+          <div class="lobby-card-meta">Sala em grupo · Clique para abrir</div>
+        `;
+        card.onclick = () => joinChatRoom(item.room, `# ${item.label}`);
+        lobbyRoomsGrid.appendChild(card);
+      });
+
+      // Lobby cards: Pessoas para 1:1
+      lobbyUsersGrid.innerHTML = "";
+      if (!otherUsers.length) {
+        lobbyUsersGrid.innerHTML = `<div class="empty-hint">Crie outra conta em outra aba para testar conversa 1:1.</div>`;
+      } else {
+        otherUsers.forEach((u) => {
+          const isOnline = onlineSet.has(u.username);
+          const card = document.createElement("button");
+          card.className = "lobby-card";
+          card.innerHTML = `
+            <div class="lobby-card-title">@${escapeHtml(u.username)}</div>
+            <div class="lobby-card-meta">${isOnline ? "🟢 Online agora" : "⚫ Offline"} · Conversa 1:1</div>
+          `;
+          card.onclick = () => startDirectMessage(u.username, u.display_name || u.username);
+          lobbyUsersGrid.appendChild(card);
+        });
+      }
+
+      if (!activeRoom) {
+        rightPanelTitle.textContent = "Online agora";
+        renderOnlineUsers(lobbyState.online_users || []);
+      }
+    }
+
+    function openLobby() {
+      closeSocket();
+      activeRoom = null;
+      lobbyNavBtn.classList.add("active");
+      chatView.classList.add("hidden");
+      lobbyView.classList.remove("hidden");
+      setConnectionStatus("", "No lobby");
+      refreshLobby().catch(() => {});
+    }
+
+    async function createRoom() {
+      const raw = newRoomInput.value.trim();
+      if (!raw) return;
+      try {
+        const data = await apiFetch("/api/rooms", {
+          method: "POST",
+          body: JSON.stringify({ name: raw }),
+        });
+        newRoomInput.value = "";
+        await refreshLobby();
+        joinChatRoom(data.room, `# ${data.room}`);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function startDirectMessage(targetUsername, displayLabel) {
+      try {
+        const data = await apiFetch("/api/dm", {
+          method: "POST",
+          body: JSON.stringify({ target_username: targetUsername }),
+        });
+        await refreshLobby();
+        joinChatRoom(data.room, `@ ${displayLabel}`);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function renderOnlineUsers(users) {
+      const list = Array.isArray(users) ? users : [];
+      onlineCount.textContent = list.length;
+      onlineList.innerHTML = "";
+      if (!list.length) {
+        onlineList.innerHTML = `<div class="empty-hint">Ninguém online aqui.</div>`;
+        return;
+      }
+      list.forEach((u) => {
         const row = document.createElement("div");
         row.className = "user-row";
         row.innerHTML = `
-          <div class="avatar">${escapeHtml(initialOf(user))}</div>
-          <div class="user-name">${escapeHtml(user)}</div>
-          <span class="presence-dot" title="Online"></span>
+          <div class="avatar">${escapeHtml(initialOf(u))}</div>
+          <div class="nav-label" style="flex:1;">${escapeHtml(u)}</div>
+          <span class="presence-dot online"></span>
         `;
-        onlineListEl.appendChild(row);
+        onlineList.appendChild(row);
       });
     }
 
@@ -634,7 +1039,7 @@
     }
 
     function addChatMessage(sender, text, time) {
-      const isSelf = sender.toLowerCase() === currentNick().toLowerCase();
+      const isSelf = sender.toLowerCase() === currentUser.toLowerCase();
       const row = document.createElement("div");
       row.className = "msg-row" + (isSelf ? " self" : "");
       row.innerHTML = `
@@ -651,23 +1056,21 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    function connect(room = currentRoom) {
-      if (ws) {
-        ws.onopen = null;
-        ws.onmessage = null;
-        ws.onclose = null;
-        ws.close();
-      }
-
-      currentRoom = (room || "geral").trim().toLowerCase() || "geral";
-      roomTitleEl.textContent = currentRoom;
+    function joinChatRoom(room, titleLabel) {
+      closeSocket();
+      activeRoom = room;
+      lobbyNavBtn.classList.remove("active");
+      lobbyView.classList.add("hidden");
+      chatView.classList.remove("hidden");
+      activeChatTitle.textContent = titleLabel;
+      rightPanelTitle.textContent = "Online na conversa";
       messagesEl.innerHTML = "";
-      renderRooms(knownRooms);
+      renderSidebarAndLobby();
       setConnectionStatus("connecting", "Conectando...");
 
-      const nick = encodeURIComponent(currentNick());
       const protocol = location.protocol === "https:" ? "wss" : "ws";
-      ws = new WebSocket(`${protocol}://${location.host}/ws/${encodeURIComponent(currentRoom)}?nickname=${nick}`);
+      const url = `${protocol}://${location.host}/ws/${encodeURIComponent(room)}?token=${encodeURIComponent(sessionToken)}`;
+      ws = new WebSocket(url);
 
       ws.onopen = () => {
         setConnectionStatus("connected", "Conectado");
@@ -677,40 +1080,26 @@
         const data = JSON.parse(event.data);
         if (data.type === "history") {
           messagesEl.innerHTML = "";
-          const list = Array.isArray(data.messages) ? data.messages : [];
-          list.forEach((m) => addChatMessage(m.sender, m.text, m.timestamp));
+          (data.messages || []).forEach((m) => addChatMessage(m.sender, m.text, m.timestamp));
         } else if (data.type === "presence") {
-          renderRooms(data.rooms);
-          renderOnline(data.online);
-          const action = data.event === "join" ? "entrou na sala" : "saiu da sala";
-          addSystemEvent(`${data.nickname} ${action}`, data.timestamp);
+          lobbyState.online_users = data.global_online || [];
+          renderSidebarAndLobby();
+          renderOnlineUsers(data.room_online || []);
+          const action = data.event === "join" ? "entrou" : "saiu";
+          addSystemEvent(`${data.username} ${action}`, data.timestamp);
         } else if (data.type === "message") {
           addChatMessage(data.sender, data.text, data.timestamp);
         }
       };
 
-      ws.onclose = () => {
+      ws.onclose = (ev) => {
+        if (ev.code === 4001) {
+          logout();
+          return;
+        }
         setConnectionStatus("disconnected", "Desconectado");
         addSystemEvent("Conexão encerrada");
       };
-    }
-
-    function reconnect() {
-      connect(currentRoom);
-    }
-
-    function switchRoom(room) {
-      connect(room);
-    }
-
-    function createAndJoinRoom() {
-      const raw = newRoomInput.value.trim().toLowerCase().replace(/\s+/g, "-");
-      if (!raw) return;
-      newRoomInput.value = "";
-      if (!knownRooms.includes(raw)) {
-        knownRooms.push(raw);
-      }
-      connect(raw);
     }
 
     function sendMessage() {
@@ -726,10 +1115,16 @@
     });
 
     newRoomInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") createAndJoinRoom();
+      if (e.key === "Enter") createRoom();
     });
 
-    connect("geral");
+    authPass.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submitAuth();
+    });
+
+    if (sessionToken && currentUser) {
+      enterApp();
+    }
   </script>
 </body>
 </html>
